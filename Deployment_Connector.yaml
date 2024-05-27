@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: connector
+  template:
+    metadata:
+      labels:
+        app: connector
+    spec:
+      restartPolicy: Always
+      containers:
+        - image: ghcr.io/nmshd/connector:3.9.4
+          imagePullPolicy: Always
+          name: connector
+          env:
+            - name: transportLibrary__baseUrl
+              value: https://nmshd-bkb.demo.meinbildungsraum.de/
+            - name: transportLibrary__platformClientId
+              valueFrom:
+                secretKeyRef:
+                  key: PLATFORM_CLIENT_ID
+                  name: glc-mongo-passwd
+            - name: transportLibrary__platformClientSecret
+              valueFrom:
+                secretKeyRef:
+                  key: PLATFORM_CLIENT_SECRET
+                  name: glc-mongo-passwd
+            - name: database__connectionString
+              valueFrom:
+                secretKeyRef:
+                  key: MONGO_CONNECTION_STRING
+                  name: glc-mongo-passwd
+            - name: database__dbName
+              value: demo
+            - name: infrastructure__httpServer__enabled
+              value: "true"
+            - name: infrastructure__httpServer__apiKey
+              valueFrom:
+                secretKeyRef:
+                  key: HTTP_API_KEY
+                  name: glc-mongo-passwd
+            - name: modules__coreHttpApi__docs__enabled
+              value: "true"
+            - name: debug
+              value: "true"
+            - name: https_proxy
+              value: http://squid:3128
+          ports:
+            - containerPort: 80

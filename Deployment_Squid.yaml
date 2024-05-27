@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: squid
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: squid
+  template:
+    metadata:
+      labels:
+        app: squid
+    spec:
+      restartPolicy: Always
+      containers:
+        - image: ubuntu/squid
+          imagePullPolicy: Always
+          name: squid
+          ports:
+            - containerPort: 3128
+          volumeMounts:
+            - mountPath: /etc/squid/conf.d/
+              name: squidconf
+      volumes:
+        - name: squidconf
+          secret:
+            secretName: squidconf
