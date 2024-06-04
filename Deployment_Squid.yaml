@@ -14,9 +14,12 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-        - image: ubuntu/squid
+        - image: ubuntu/squid:5.2-22.04_beta
           imagePullPolicy: Always
           name: squid
+          env:
+            - name: TZ
+              value: UTC
           ports:
             - containerPort: 3128
           volumeMounts:
