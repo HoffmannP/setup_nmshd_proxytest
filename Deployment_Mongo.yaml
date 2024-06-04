@@ -1,24 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: squid
+  name: mongo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: squid
+      app: mongo
   template:
     metadata:
       labels:
-        app: squid
+        app: mongo
     spec:
       restartPolicy: Always
       containers:
-        - image: ubuntu/squid:5.2-22.04_beta
+        - image: mongo
           imagePullPolicy: Always
-          name: squid
-          env:
-            - name: TZ
-              value: UTC
+          name: mongo
           ports:
-            - containerPort: 3128
+            - containerPort: 27017

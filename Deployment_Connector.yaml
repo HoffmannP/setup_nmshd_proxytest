@@ -24,30 +24,21 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: PLATFORM_CLIENT_ID
-                  name: glc-mongo-passwd
+                  name: nmshd
             - name: transportLibrary__platformClientSecret
               valueFrom:
                 secretKeyRef:
                   key: PLATFORM_CLIENT_SECRET
-                  name: glc-mongo-passwd
+                  name: nmshd
             - name: database__connectionString
-              valueFrom:
-                secretKeyRef:
-                  key: MONGO_CONNECTION_STRING
-                  name: glc-mongo-passwd
+              value: mongodb://mongo:27017
             - name: database__dbName
-              value: demo
-            - name: infrastructure__httpServer__enabled
-              value: "true"
+              value: mydb
             - name: infrastructure__httpServer__apiKey
               valueFrom:
                 secretKeyRef:
                   key: HTTP_API_KEY
-                  name: glc-mongo-passwd
-            - name: modules__coreHttpApi__docs__enabled
-              value: "true"
-            - name: debug
-              value: "true"
+                  name: nmshd
             - name: https_proxy
               value: http://squid:3128
           ports:
